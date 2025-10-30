@@ -16,22 +16,29 @@ final class MainCollectionCell: UICollectionViewCell {
     
     static let cellIdentifier = "ImageLookupCell"
     weak var delegate: MainCollectionCellDelegate?
-    fileprivate var cellIndex: Int?
     
     // MARK: - UI
     
     fileprivate lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     fileprivate lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
         return imageView
+    }()
+    
+    fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     // MARK: - Init
@@ -45,8 +52,23 @@ final class MainCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Reuse override
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+        activityIndicator.stopAnimating()
+    }
+    
+    // MARK: - UI setup
+    
     fileprivate func commonInit() {
+        contentView.backgroundColor = .white
+        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                  action: #selector(didTapOnCell)))
+        
         contentView.addSubview(containerView)
+        containerView.addSubview(activityIndicator)
         containerView.addSubview(imageView)
         
         NSLayoutConstraint.activate([
@@ -57,6 +79,11 @@ final class MainCollectionCell: UICollectionViewCell {
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
+            // activityView
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            
             // image
             imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
@@ -65,17 +92,21 @@ final class MainCollectionCell: UICollectionViewCell {
         ])
     }
     
-    // MARK: - Reuse override
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageView.image = nil
-    }
-    
     // MARK: - Configuration
     
     func configure(with model: MainCollectionCellUIModel) {
-        cellIndex = model.cellIndex
-        imageView.image = model.image
+        guard let image = model.image else {
+            imageView.image = UIImage()
+            activityIndicator.startAnimating()
+            return
+        }
+        activityIndicator.stopAnimating()
+        imageView.image = image
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func didTapOnCell() {
+        delegate?.didTapCell(cell: self)
     }
 }

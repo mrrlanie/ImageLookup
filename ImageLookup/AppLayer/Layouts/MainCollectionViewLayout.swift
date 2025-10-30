@@ -11,18 +11,15 @@ import UIKit
 class MainCollectionViewLayout {
     
     static func createLayout() -> NSCollectionLayoutSection {
-        let screenWidth = UIScreen.main.bounds.width
+        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                            heightDimension: .fractionalWidth(1)))
         
-        // 390 - 20 / 390 = 0.95
-        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.95),
-                                                            heightDimension: .fractionalWidth(0.95)))
-        
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(0.95),
-                                                                           heightDimension: .fractionalWidth(0.95)),
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                                           heightDimension: .fractionalWidth(1)),
                                                          subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 10, leading: 10, bottom: 10, trailing: 10)
-        section.interGroupSpacing = 0
+        section.interGroupSpacing = 10
         
         return section
     }

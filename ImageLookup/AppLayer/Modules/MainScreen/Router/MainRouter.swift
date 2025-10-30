@@ -7,4 +7,6 @@
 
 import Foundation
 
+// MARK: - MainRouter
+
 final class MainRouter: MainRouterInput { }

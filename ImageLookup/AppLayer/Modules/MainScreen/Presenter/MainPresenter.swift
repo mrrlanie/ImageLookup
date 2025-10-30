@@ -6,12 +6,21 @@
 //
 
 import Foundation
+import UIKit
+
+// MARK: - MainPresenter
 
 final class MainPresenter: MainViewOutput {
+    
+    // MARK: - Private properties
     
     private var view: MainViewInput
     private var interactor: MainInteractorInput
     private var router: MainRouterInput
+    
+    fileprivate var isDeletionInProgress = false
+    
+    // MARK: - Init
     
     init(view: MainViewInput,
          interactor: MainInteractorInput,
@@ -21,10 +30,48 @@ final class MainPresenter: MainViewOutput {
         self.router = router
     }
     
-    func viewDidLoad() { }
+    // MARK: - Public functions
+    
+    func viewDidLoad() {
+        interactor.createDummies()
+    }
+    
+    func didPullToRefresh() {
+        interactor.refreshImages()
+    }
+    
+    func willDisplayCell(at: Int) {
+        interactor.loadImage(at: at)
+    }
 }
+
+// MARK: - MainInteractorOutput
+
+extension MainPresenter: MainInteractorOutput {
+    
+    func didChangeData(data: [ImageModel]) {
+        view.updateImages(images: data)
+    }
+}
+ 
+// MARK: - MainCollectionCellDelegate
 
 extension MainPresenter: MainCollectionCellDelegate {
     
-    func didTapCell(at index: Int) { }
+    func didTapCell(cell: MainCollectionCell) {
+        if isDeletionInProgress {
+            print("Deletion in progress, wait!")
+            return
+        } else {
+            isDeletionInProgress = true
+            view.didTapCell(cell: cell) { [weak self] index in
+                guard let self else {
+                    return
+                }
+                print("Deleted image for index \(index)")
+                interactor.deleteImage(at: index)
+                isDeletionInProgress = false
+            }
+        }
+    }
 }

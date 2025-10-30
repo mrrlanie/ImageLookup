@@ -12,4 +12,6 @@ import Foundation
 protocol MainViewOutput: AnyObject, MainCollectionCellDelegate {
     
     func viewDidLoad()
+    func didPullToRefresh()
+    func willDisplayCell(at index: Int)
 }

@@ -6,7 +6,13 @@
 //
 
 import Foundation
+import UIKit
 
 // MARK: - MainViewInput
 
-protocol MainViewInput: AnyObject { }
+protocol MainViewInput: AnyObject {
+    
+    func updateImages(images: [ImageModel])
+    func updateCell(at index: Int, with image: UIImage?)
+    func didTapCell(cell: MainCollectionCell, completion: @escaping (Int) -> Void)
+}

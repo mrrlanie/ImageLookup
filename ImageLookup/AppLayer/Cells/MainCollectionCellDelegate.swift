@@ -11,5 +11,5 @@ import Foundation
 
 protocol MainCollectionCellDelegate: AnyObject {
     
-    func didTapCell(at index: Int)
+    func didTapCell(cell: MainCollectionCell)
 }

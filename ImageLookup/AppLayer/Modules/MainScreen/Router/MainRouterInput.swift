@@ -7,4 +7,6 @@
 
 import Foundation
 
+// MARK: - MainRouterInput
+
 protocol MainRouterInput: AnyObject { }

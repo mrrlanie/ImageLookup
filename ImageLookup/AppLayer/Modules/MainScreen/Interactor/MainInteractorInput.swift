@@ -6,5 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
-protocol MainInteractorInput: AnyObject { }
+protocol MainInteractorInput: AnyObject {
+    
+    func createDummies()
+    func loadImage(at index: Int)
+    func deleteImage(at index: Int)
+    func refreshImages()
+}

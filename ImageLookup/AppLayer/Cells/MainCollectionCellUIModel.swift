@@ -12,6 +12,5 @@ import UIKit
 
 struct MainCollectionCellUIModel {
     
-    let cellIndex: Int
     let image: UIImage?
 }

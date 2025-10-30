@@ -16,10 +16,13 @@ class MainScreenConfigurator {
         let view = MainViewController()
         let interactor = MainInteractor()
         let router = MainRouter()
+        
         let presenter = MainPresenter(view: view,
                                       interactor: interactor,
                                       router: router)
+        
         view.output = presenter
+        interactor.output = presenter
         return view
     }
 }
