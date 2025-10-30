@@ -12,7 +12,7 @@ import Foundation
 
 final class MainCollectionCell: UICollectionViewCell {
     
-    // MARK: - Properties
+    // MARK: - Public properties
     
     static let cellIdentifier = "ImageLookupCell"
     weak var delegate: MainCollectionCellDelegate?
@@ -52,8 +52,6 @@ final class MainCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Reuse override
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
@@ -80,7 +78,6 @@ final class MainCollectionCell: UICollectionViewCell {
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             // activityView
-            
             activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             

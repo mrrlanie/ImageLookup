@@ -12,11 +12,11 @@ import Foundation
 
 final class MainViewController: UIViewController, MainViewInput {
     
-    // MARK: - Output
+    // MARK: - Public properties
     
-    var output: MainViewOutput?
+    weak var output: MainViewOutput?
     
-    // MARK: - Properties
+    // MARK: - Private properties
     
     fileprivate var images: [ImageModel] = []
     
@@ -48,10 +48,6 @@ final class MainViewController: UIViewController, MainViewInput {
         registerCells()
         setupUI()
         output?.viewDidLoad()
-    }
-    
-    private func registerCells() {
-        collectionView.register(MainCollectionCell.self, forCellWithReuseIdentifier: MainCollectionCell.cellIdentifier)
     }
     
     // MARK: - UI Initialization
@@ -111,6 +107,12 @@ final class MainViewController: UIViewController, MainViewInput {
                 })
             }
         }
+    }
+    
+    // MARK: - Private functions
+    
+    private func registerCells() {
+        collectionView.register(MainCollectionCell.self, forCellWithReuseIdentifier: MainCollectionCell.cellIdentifier)
     }
     
     // MARK: - Actions

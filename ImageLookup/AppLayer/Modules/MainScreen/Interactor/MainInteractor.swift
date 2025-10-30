@@ -12,18 +12,24 @@ import UIKit
 
 final class MainInteractor: MainInteractorInput {
     
+    // MARK: - Public Properties
+    
     weak var output: MainInteractorOutput?
     
-    // MARK: - Properties
+    // MARK: -  Private Properties
     
     private var data: [ImageModel] = []
     private let cachingService: ImageCachingService = .shared
     private let downloadingService: ImageDownloaderService = .shared
+    private var latestDummyCount = 0
     
-    func createDummies() {
+    // MARK: - Public functions
+    
+    func createDummies(dummyCount: Int) {
         var models: [ImageModel] = []
-        for _ in 0...5 {
-            models.append(.init(imageUrl: "https://placehold.co/800x600.png",
+        latestDummyCount = dummyCount
+        for index in 0...latestDummyCount - 1 {
+            models.append(.init(imageUrl: "https://placehold.co/800x6\(index)0.png",
                                 downloadedImage: nil))
         }
         data = models
@@ -37,13 +43,15 @@ final class MainInteractor: MainInteractorInput {
         }
         
         downloadingService.downloadImage(from: modelToLoad.imageUrl,
-                                         completion: { [weak self] image in
+                                         completion: { [weak self] image, error in
             guard let self else {
                 return
             }
             
+            let imageToShow: UIImage? = error == nil ? image : .error
+            
             data.insert(.init(imageUrl: modelToLoad.imageUrl,
-                              downloadedImage: image),
+                              downloadedImage: imageToShow),
                         at: index)
             data.remove(at: index + 1)
             output?.didChangeData(data: data)
@@ -58,6 +66,6 @@ final class MainInteractor: MainInteractorInput {
     
     func refreshImages() {
         cachingService.clearCache()
-        createDummies()
+        createDummies(dummyCount: latestDummyCount)
     }
 }

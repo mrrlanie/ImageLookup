@@ -8,9 +8,11 @@
 import Foundation
 import UIKit
 
+// MARK: - MainInteractorInput
+
 protocol MainInteractorInput: AnyObject {
     
-    func createDummies()
+    func createDummies(dummyCount: Int)
     func loadImage(at index: Int)
     func deleteImage(at index: Int)
     func refreshImages()

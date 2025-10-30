@@ -33,7 +33,7 @@ final class MainPresenter: MainViewOutput {
     // MARK: - Public functions
     
     func viewDidLoad() {
-        interactor.createDummies()
+        interactor.createDummies(dummyCount: 6)
     }
     
     func didPullToRefresh() {
@@ -60,7 +60,6 @@ extension MainPresenter: MainCollectionCellDelegate {
     
     func didTapCell(cell: MainCollectionCell) {
         if isDeletionInProgress {
-            print("Deletion in progress, wait!")
             return
         } else {
             isDeletionInProgress = true
@@ -68,7 +67,7 @@ extension MainPresenter: MainCollectionCellDelegate {
                 guard let self else {
                     return
                 }
-                print("Deleted image for index \(index)")
+                
                 interactor.deleteImage(at: index)
                 isDeletionInProgress = false
             }
